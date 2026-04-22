@@ -1,0 +1,34 @@
+expr=require('express')
+app=expr()
+ss=require('express-session')
+app.use(expr.static('../public',{index:'6.html'}))
+app.use(expr.static('../public',{index:'order.html'}))
+app.use(expr.urlencoded({extended:true}))
+app.use(ss({
+    secret:'my123',
+    resave:true,
+    saveUninitialized:false,
+}))
+app.post('/login',(req,res)=>{
+    req.session.name=req.body.name
+    res.redirect('/order.html')
+})
+app.post('/order',(req,res)=>{
+
+     req.session.product=req.body.product
+     req.session.quantity=req.body.quantity
+     res.redirect('/summary')
+})
+app.get('/summary',(req,res)=>{
+    res.type('text/html')
+    res.write(`<h1>${req.session.name}</h1>`)
+    res.write(`<h1>${req.session.product}</h1>`)
+    res.write(`<h1>${req.session.quantity}</h1>`)
+    res.write(`<a href='/logout'>logout</a>`)
+    res.send()
+})
+app.get('/logout',(req,res)=>{
+    req.session.destroy()
+    res.redirect('/')
+})
+app.listen(5558)
