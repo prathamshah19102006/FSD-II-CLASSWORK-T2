@@ -1,0 +1,5 @@
+expr=require('express')
+app=expr()
+i=require('./api3.js')
+app.use('/api',i)
+app.listen(5556)

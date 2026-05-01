@@ -1,0 +1,16 @@
+expr=require('express')
+app=expr()
+cp=require('cookie-parser')
+app.use(cp())
+app.use(expr.static('../public',{index:"4.html"}))
+app.use(expr.urlencoded({extended:true}))
+app.post('/next',(req,res)=>{
+    res.cookie('fname',req.body.fname)
+    res.cookie('lname',req.body.lname)
+    res.cookie('email',req.body.email)
+    res.redirect('/data')
+})
+app.get('/data',(req,res)=>{
+    res.send(`welcome ${req.cookies.fname} ${req.cookies.lname}`)
+})
+app.listen(5001)

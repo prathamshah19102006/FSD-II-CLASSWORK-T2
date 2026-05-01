@@ -1,0 +1,6 @@
+expr=require('express')
+app=expr()
+app.use(expr.static('../public'))
+app.use(expr.static('../styles'))
+app.use(expr.static('../resource'))
+app.listen(3002)
